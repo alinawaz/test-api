@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    container_name: 'web'
+    build: .
+    image: test-api_web:latest
+    volumes:
+      - .:/go/src/test-api
+    working_dir: /go/src/test-api
+    command: go run main.go
+    ports:
+      - "8080:8080"
+    links:
+      - mysql-db
+    depends_on:
+      - mysql-db
+  mysql-db:
+    image: mysql:latest
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: lalamove
+      
